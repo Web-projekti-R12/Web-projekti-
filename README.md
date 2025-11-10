@@ -1,7 +1,7 @@
 # Web-projekti-R12
 
 ## Dockerilla ajaminen
-1. docker comppose up -d --build
+1. docker compose up -d --build
 
 ## Frontend riippuvuudet
 1. npm install vite@latest  
