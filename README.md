@@ -1,12 +1,7 @@
 # Web-projekti-R12
 
 ## Dockerilla ajaminen
-1. docker compose up -d --build
-
-## Frontend riippuvuudet
-1. npm install vite@latest  
-2. npm install axios react-router-dom  
-
-## Backend riippuvuudet
-1. npm install jsonwebtoken bcrypt nodemon pg  
-2. npm install express cors
+1. kloonaa repo
+2. cd backend -> npm install
+3. cd frontend -> npm install
+4. projektin juuressa docker compose up -d --build
