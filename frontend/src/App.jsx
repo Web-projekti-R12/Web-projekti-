@@ -9,6 +9,7 @@ import Login from '/pages/Login'
 import Groups from '/pages/Groups'
 import MovieTestPage from '../pages/Movie_test_page'
 import MovieSearch from '../pages/Search'
+import Registration from '../pages/Registration'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/movietestpage" exact element={<MovieTestPage />} />
         <Route path="/search" exact element={<MovieSearch />} />
         <Route path="/*" exact element={<NotFound />} />
+        <Route path="/registration" exact element={<Registration />} />
       </Routes>
       <Footer />
     </>
