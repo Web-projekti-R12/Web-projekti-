@@ -1,0 +1,16 @@
+.login-container {
+
+    display: grid;
+    place-items: center;
+    min-height: 50vh;
+    margin: 0;
+    
+}
+
+.login-container h2 {
+    color: black;
+}
+
+.login-container p {
+    color: black;
+}
