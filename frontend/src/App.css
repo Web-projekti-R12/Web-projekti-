@@ -1,5 +1,11 @@
-.login-container {
+.main-content{
+  margin-top: 10px; 
+  padding: 1rem;
+  color: #000000;
+  margin-bottom: 50px; /*Väliaikainen*/
+}
 
+.login-container {
     display: grid;
     place-items: center;
     min-height: 50vh;
@@ -14,3 +20,4 @@
 .login-container p {
     color: black;
 }
+
