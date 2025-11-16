@@ -4,7 +4,7 @@
 }
 
 body {
-  background-color: white;
+  background-color: var(--primary-bg-color);
   color: white;
 }
 
