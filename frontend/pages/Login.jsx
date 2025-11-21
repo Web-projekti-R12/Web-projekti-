@@ -1,9 +1,15 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+// TÄRKEÄ MUUTOS: Backend-palvelimen osoite pysyy 4000
+const API_URL = 'http://localhost:4000/api/auth/login';
 
 export default function Login() {
+    const navigate = useNavigate()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const handleUsernameChange = (event) => {
         setUsername(event.target.value)
@@ -13,49 +19,95 @@ export default function Login() {
         setPassword(event.target.value)
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
+        setError('')
+        setLoading(true)
 
-        console.log('Yritykset:');
-        console.log('Käyttäjätunnus:', username);
-        console.log('Salasana:', password);
+        if (!username || !password) {
+            setError('Anna käyttäjätunnus ja salasana.')
+            setLoading(false)
+            return
+        }
+
+        try {
+            const response = await axios.post(
+                API_URL, 
+                { username, password }
+            )
+            
+            const token = response.data.token
+            
+            localStorage.setItem('authToken', token)
+            console.log('Kirjautuminen onnistui. Token tallennettu.')
+            navigate('/') 
+
+        } catch (err) {
+            console.error('Kirjautumisvirhe:', err.response ? err.response.data : err.message)
+            const errorMessage = err.response?.data?.msg || 'Kirjautuminen epäonnistui. Tarkista tietosi ja palvelimen tila.';
+            setError(errorMessage)
+        } finally {
+            setLoading(false)
+        }
     }
 
-
-
     return (
+        // Käytetään luokkaa login-container keskittämiseen
         <div className="login-container">
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
+            
+            <div className="form-card">
+                <h2 className="form-title">Kirjaudu sisään</h2>
+                
+                {/* Virheilmoituksen näyttö */}
+                {error && (
+                    <div className="error-message" role="alert">
+                        <p className="error-text">Virhe: {error}</p>
+                    </div>
+                )}
+                
+                <form onSubmit={handleSubmit} className="login-form">
 
-        <div className="form-group">
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={handleUsernameChange}
-            required
-          />
-        </div>
+                    <div className="form-group">
+                        <label htmlFor="username">Käyttäjätunnus:</label>
+                        <input
+                            type="text"
+                            id="username"
+                            value={username}
+                            onChange={handleUsernameChange}
+                            required
+                            className="form-input"
+                            disabled={loading}
+                            placeholder="Anna käyttäjätunnuksesi"
+                        />
+                    </div>
 
-        <div className="form-group">
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-            required
-          />
-        </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Salasana:</label>
+                        <input
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={handlePasswordChange}
+                            required
+                            className="form-input"
+                            disabled={loading}
+                            placeholder="Anna salasanasi"
+                        />
+                    </div>
 
-        <button type="submit">Login</button>
-      </form>
-        <p classname="registration-link">
-            Don't have an account yet? <Link to="/registration">Register here</Link>
-
-        </p>
+                    <button 
+                        type="submit"
+                        disabled={loading}
+                        className="submit-button"
+                    >
+                        {loading ? 'Kirjaudutaan...' : 'Kirjaudu sisään'}
+                    </button>
+                </form>
+                
+                <p className="registration-link-wrapper">
+                    Eikö sinulla ole tiliä? <Link to="/registration" className="registration-link">Rekisteröidy tästä</Link>
+                </p>
+            </div>
         </div>
     )
 }

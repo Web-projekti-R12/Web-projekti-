@@ -10,6 +10,7 @@ import Groups from "../pages/Groups";
 import MovieTestPage from "../pages/Movie_test_page";
 import MovieSearch from "../pages/Search";
 import Registration from "../pages/Registration";
+import ProtectedRoute from '../components/ProtectedRoute';
 
 function App() {
 
@@ -22,11 +23,16 @@ function App() {
         <Routes>
           <Route path="/" exact element={<Home />} />
           <Route path="/login" exact element={<Login />} />
-          <Route path="/groups" exact element={<Groups />} />
-          <Route path="/movietestpage" exact element={<MovieTestPage />} />
           <Route path="/search" exact element={<MovieSearch />} />
-          <Route path="/*" exact element={<NotFound />} />
           <Route path="/registration" exact element={<Registration />} />
+          <Route path="/movietestpage" exact element={<MovieTestPage />} />
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="/groups" exact element={<Groups />} />
+          
+        </Route>
+
+          <Route path="/*" exact element={<NotFound />} />
         </Routes>
       </main>
 
