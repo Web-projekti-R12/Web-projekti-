@@ -1,7 +1,22 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom'; // TÄRKEÄÄ: Tuo useNavigate
 
 export default function Navbar() {
+    // 1. Hookit
+    const navigate = useNavigate();
+
+    // 2. Tilan tarkistus: Tarkista, onko kirjautunut sisään
+    const isAuthenticated = !!localStorage.getItem('authToken');
+
+    // 3. Uloskirjautumistoiminto
+    const handleLogout = () => {
+        // Poista token
+        localStorage.removeItem('authToken');
+        
+        // Ohjaa kirjautumissivulle
+        navigate('/login');
+    };
+
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
@@ -11,27 +26,55 @@ export default function Navbar() {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                        
+                        {/* 1. Julkiset linkit */}
                         <li className="nav-item">
                             <Link className='nav-link' to="/">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className='nav-link' to="/groups">Groups</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to="/login">Login</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to="/movietestpage">Movies</Link>
-                        </li>
-                        <li className="nav-item">
                             <Link className='nav-link' to="/search">Search</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to="/registration">Registration</Link>
+                         <li className="nav-item">
+                             <Link className='nav-link' to="/movietestpage">Movies</Link>
                         </li>
+
+                        
+                        {/* 2. Ehdolliset linkit (Näkyy vain, jos kirjautunut) */}
+                        {isAuthenticated && (
+                            <>
+                                <li className="nav-item">
+                                    <Link className='nav-link' to="/groups">Groups</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className='nav-link' to="/movietestpage">Movies</Link>
+                                </li>
+                            </>
+                        )}
+                        
+                        {/* 3. Autentikaatiolinkit / Uloskirjautuminen */}
+                        {isAuthenticated ? (
+                            // Kirjautunut sisään: Näytä Kirjaudu ulos -nappi
+                            <li className="nav-item">
+                                <button 
+                                    className='btn btn-outline-danger' // Käytä Bootstrap-luokkaa
+                                    onClick={handleLogout}
+                                >
+                                    Kirjaudu ulos
+                                </button>
+                            </li>
+                        ) : (
+                            <>
+                                <li className="nav-item">
+                                    <Link className='nav-link' to="/login">Login</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className='nav-link' to="/registration">Registration</Link>
+                                </li>
+                            </>
+                        )}
                     </ul>
                 </div>
             </div>
         </nav >
-    )
+    );
 }
