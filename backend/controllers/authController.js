@@ -14,10 +14,34 @@ export async function registerUser(req, res) {
   if (!loginEmail || !password) {
     return res
       .status(400)
-      .json({ msg: 'Sähköposti ja salasana vaaditaan.' })
+      .json({ msg: 'Email and password are required.' })
   }
 
-  // salasanan hashaus
+  // PASSWORD VALIDATION
+  const passwordRules = {
+    minLength: password.length >= 8,
+    hasUppercase: /[A-Z]/.test(password),
+    hasNumber: /[0-9]/.test(password),
+  }
+
+  if (!passwordRules.minLength) {
+    return res.status(400).json({
+      msg: 'The password must be at least 8 characters long.',
+    })
+  }
+
+  if (!passwordRules.hasUppercase) {
+    return res.status(400).json({
+      msg: 'The password must contain at least one uppercase letter.',
+    })
+  }
+
+  if (!passwordRules.hasNumber) {
+    return res.status(400).json({
+      msg: 'The password must contain at least one number',
+    })
+  }
+
   try {
     const salt = await bcrypt.genSalt(10)
     const passwordHash = await bcrypt.hash(password, salt)
@@ -25,12 +49,12 @@ export async function registerUser(req, res) {
     const user = await createUser({ email: loginEmail, passwordHash })
 
     return res.status(201).json({
-      msg: 'Käyttäjä luotu onnistuneesti.',
+      msg: 'User created',
       user,
     })
   } catch (err) {
     if (err.code === '23505') {
-      return res.status(400).json({ msg: 'Sähköposti on jo käytössä.' })
+      return res.status(400).json({ msg: 'Email is already in use.' })
     }
     console.error('Rekisteröintivirhe:', err.stack || err)
     return res.status(500).send('Palvelinvirhe rekisteröinnissä.')
@@ -46,7 +70,7 @@ export async function loginUser(req, res) {
   if (!loginEmail || !password) {
     return res
       .status(400)
-      .json({ msg: 'Sähköposti ja salasana vaaditaan.' })
+      .json({ msg: 'Email and password are required.' })
   }
 
   try {

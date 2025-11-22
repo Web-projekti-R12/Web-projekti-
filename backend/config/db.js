@@ -16,14 +16,14 @@ pool
   .connect()
   .then((client) => {
     console.log(
-      `Tietokantayhteys OK! (PGHOST: ${process.env.PGHOST}, PGPORT: ${process.env.PGPORT})`
+      `Tietokantayhteys toimii (PGHOST: ${process.env.PGHOST}, PGPORT: ${process.env.PGPORT})`
     )
     client.release()
   })
   .catch((err) => {
     console.error('Tietokantayhteys epäonnistui.', err)
     console.log(
-      `Yritetyt asetukset: HOST=${process.env.PGHOST}, PORT=${process.env.PGPORT}, USER=${process.env.PGUSER}, DBNAME=${process.env.PGDATABASE}`
+      `asetukset: HOST=${process.env.PGHOST}, PORT=${process.env.PGPORT}, USER=${process.env.PGUSER}, DBNAME=${process.env.PGDATABASE}`
     )
   })
 
