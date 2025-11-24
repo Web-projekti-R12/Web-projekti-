@@ -10,8 +10,8 @@ const app = express()
 app.use(express.json())
 app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }))
 
-app.use('/api/auth', authRoutes)   // <-- tärkeä
-app.use('/api/users', userRoutes)  // jos sulla on tämäkin
+app.use('/api/auth', authRoutes)
+app.use('/api/users', userRoutes)  
 
 app.get('/test', (req, res) => {
   res.send('Palvelin vastaa ja reititys toimii!')

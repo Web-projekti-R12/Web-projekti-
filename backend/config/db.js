@@ -11,15 +11,4 @@ const pool = new Pool({
   password: process.env.PGPASSWORD,
 })
 
-// (valinnainen pieni testikysely, joka EI kaada mitään)
-pool.query('SELECT NOW()')
-  .then(res => {
-    console.log(
-      `Tietokantayhteys toimii (PGHOST: ${process.env.PGHOST}, PGPORT: ${process.env.PGPORT})`
-    )
-  })
-  .catch(err => {
-    console.error('Tietokantayhteyden testikysely epäonnistui:', err.message)
-  })
-
 export default pool
