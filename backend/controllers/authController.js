@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 import { createUser, findUserByEmail } from '../models/userModel.js'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_must_be_changed'
+const JWT_SECRET = process.env.JWT_SECRET
 
 export async function registerUser(req, res) {
   const { email, username, password } = req.body
@@ -17,7 +17,7 @@ export async function registerUser(req, res) {
       .json({ msg: 'Email and password are required.' })
   }
 
-  // PASSWORD VALIDATION
+  // salasanan määritykset
   const passwordRules = {
     minLength: password.length >= 8,
     hasUppercase: /[A-Z]/.test(password),
