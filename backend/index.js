@@ -1,31 +1,23 @@
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
-import pkg from 'pg'
-const { Pool } = pkg
+import './config/db.js'
+import authRoutes from './routes/authRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 
 const app = express()
+
 app.use(express.json())
 app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }))
 
-const pool = new Pool({
-  host: process.env.PGHOST,
-  port: process.env.PGPORT,
-  database: process.env.PGDATABASE,
-  user: process.env.PGUSER,
-  password: process.env.PGPASSWORD,
+app.use('/api/auth', authRoutes)
+app.use('/api/users', userRoutes)  
+
+app.get('/test', (req, res) => {
+  res.send('Palvelin vastaa ja reititys toimii!')
 })
 
-app.get('/users', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM users')
-    res.json(result.rows)
-  } catch (err) {
-    console.error('Virhe:', err)
-    res.status(500).send('Virhe')
-  }
-})
-
-app.listen(process.env.PORT, () => {
-  console.log(`Toimii portissa ${process.env.PORT}`)
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+  console.log(`Backend toimii portissa ${PORT}`)
 })
