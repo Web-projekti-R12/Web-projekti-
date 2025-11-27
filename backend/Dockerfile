@@ -13,4 +13,4 @@ COPY . .
 EXPOSE 3000
 
 # Käynnistä tuotantona suoraan Node:lla
-CMD ["node", "index.js"]
+CMD ["node", "index.js", "npm", "run", "dev"]

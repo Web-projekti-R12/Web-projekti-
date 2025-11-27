@@ -34,8 +34,8 @@ export default function Navbar() {
                         <li className="nav-item">
                             <Link className='nav-link' to="/search">Search</Link>
                         </li>
-                         <li className="nav-item">
-                             <Link className='nav-link' to="/movietestpage">Movies</Link>
+                        <li className="nav-item">
+                            <Link className='nav-link' to="/movietestpage">Movies</Link>
                         </li>
 
                         
@@ -46,20 +46,20 @@ export default function Navbar() {
                                     <Link className='nav-link' to="/groups">Groups</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className='nav-link' to="/movietestpage">Movies</Link>
+                                    <Link className='nav-link' to="/favorites">Favorites</Link>
                                 </li>
                             </>
                         )}
                         
                         {/* 3. Autentikaatiolinkit / Uloskirjautuminen */}
                         {isAuthenticated ? (
-                            // Kirjautunut sisään: Näytä Kirjaudu ulos -nappi
+                            // Kirjautunut sisään: Näytä Logout-nappi
                             <li className="nav-item">
                                 <button 
                                     className='btn btn-outline-danger' // Käytä Bootstrap-luokkaa
                                     onClick={handleLogout}
                                 >
-                                    Kirjaudu ulos
+                                    Logout
                                 </button>
                             </li>
                         ) : (
