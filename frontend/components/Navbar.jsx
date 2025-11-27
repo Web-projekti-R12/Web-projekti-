@@ -38,6 +38,7 @@ export default function Navbar() {
                             <Link className='nav-link' to="/movietestpage">Movies</Link>
                         </li>
 
+                        
                         {/* 2. Ehdolliset linkit (Näkyy vain, jos kirjautunut) */}
                         {isAuthenticated && (
                             <>
