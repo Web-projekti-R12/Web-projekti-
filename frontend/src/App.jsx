@@ -24,7 +24,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<MovieSearch />} />
           <Route path="/registration" element={<Registration />} />
-          <Route path="/movietestpage" element={<MovieTestPage />} />
+          {/*<Route path="/movietestpage" element={<MovieTestPage />} />  <<< tämä pois*/}
           <Route path="/favorites" element={<Favorites />} /> {/* uusi reitti */}
           <Route path="/" exact element={<Home />} />
           <Route path="/login" exact element={<Login />} />
