@@ -9,6 +9,7 @@ import Login from "../pages/Login";
 import Groups from "../pages/Groups";
 import MovieSearch from "../pages/Search";
 import Registration from "../pages/Registration";
+import Reviews from '../pages/Reviews';
 import ProtectedRoute from '../components/ProtectedRoute';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
 
         <Route element={<ProtectedRoute />}>
           <Route path="/groups" exact element={<Groups />} />
+          <Route path="/reviews" exact element={<Reviews />} />
           
         </Route>
 
