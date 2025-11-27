@@ -21,15 +21,12 @@ function App() {
 
       <main className='main-content'>
         <Routes>
-<<<<<<< Updated upstream
-=======
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<MovieSearch />} />
           <Route path="/registration" element={<Registration />} />
           {/*<Route path="/movietestpage" element={<MovieTestPage />} />  <<< tämä pois*/}
           <Route path="/favorites" element={<Favorites />} /> {/* uusi reitti */}
->>>>>>> Stashed changes
           <Route path="/" exact element={<Home />} />
           <Route path="/login" exact element={<Login />} />
           <Route path="/search" exact element={<MovieSearch />} />
