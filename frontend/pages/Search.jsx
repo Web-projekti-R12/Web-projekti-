@@ -20,9 +20,25 @@ export default function MovieSearch() {
     const data = await res.json();
     const results = data.results || [];
 
+    // Suodata tulokset eri kategorioihin
     setMovies(results.filter((item) => item.media_type === "movie"));
     setTvShows(results.filter((item) => item.media_type === "tv"));
     setPeople(results.filter((item) => item.media_type === "person"));
+  };
+
+  // Lisää suosikki backendin kautta
+  const addToFavorites = async (movieId) => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/favorites`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: 1, movie_id: movieId }), // testikäyttäjä user_id=1
+      });
+      alert("Added to favorites!");
+    } catch (err) {
+      console.error("Error adding favorite:", err);
+      alert("Failed to add favorite");
+    }
   };
 
   return (
@@ -51,6 +67,9 @@ export default function MovieSearch() {
                 alt={movie.title}
               />
               <p>{movie.title}</p>
+              <button onClick={() => addToFavorites(movie.id)}>
+                Add to favorites
+              </button>
             </div>
           ))}
         </div>
@@ -70,6 +89,9 @@ export default function MovieSearch() {
                 alt={show.name}
               />
               <p>{show.name}</p>
+              <button onClick={() => addToFavorites(show.id)}>
+                Add to favorites
+              </button>
             </div>
           ))}
         </div>
@@ -80,7 +102,6 @@ export default function MovieSearch() {
           <h2>People</h2>
           {people.map((person) => (
             <div key={person.id}>
-
               {person.profile_path && (
                 <img
                   src={`https://image.tmdb.org/t/p/w200${person.profile_path}`}
@@ -88,6 +109,9 @@ export default function MovieSearch() {
                 />
               )}
               <p>{person.name}</p>
+              <button onClick={() => addToFavorites(person.id)}>
+                Add to favorites
+              </button>
             </div>
           ))}
         </div>
