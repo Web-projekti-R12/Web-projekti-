@@ -1,11 +1,11 @@
 :root {
-  --primary-bg-color: #0f0f0f;
+  --primary-bg-color: white;
   --secondary-color: #1a1a1a;
 }
 
 body {
-  background-color: white;
-  color: black;
+  background-color: var(--primary-bg-color);
+  color: white;
 }
 
 nav-link {
@@ -13,7 +13,7 @@ nav-link {
 }
 
 p {
-  color: white;
+  color: black;
 }
 
 footer {

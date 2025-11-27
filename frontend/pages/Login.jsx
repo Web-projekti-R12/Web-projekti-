@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-// TÄRKEÄ MUUTOS: Backend-palvelimen osoite pysyy 4000
-const API_URL = 'http://localhost:4000/api/auth/login';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'
+const API_URL = `${API_BASE_URL}/api/auth/login`
 
 export default function Login() {
     const navigate = useNavigate()
