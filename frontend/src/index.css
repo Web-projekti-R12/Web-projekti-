@@ -1,5 +1,5 @@
 :root {
-  --primary-bg-color: #0f0f0f;
+  --primary-bg-color: white;
   --secondary-color: #1a1a1a;
 }
 
@@ -13,7 +13,7 @@ nav-link {
 }
 
 p {
-  color: white;
+  color: black;
 }
 
 footer {

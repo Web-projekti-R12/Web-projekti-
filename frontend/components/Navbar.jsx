@@ -34,19 +34,12 @@ export default function Navbar() {
                         <li className="nav-item">
                             <Link className='nav-link' to="/search">Search</Link>
                         </li>
-                         <li className="nav-item">
-                             <Link className='nav-link' to="/movietestpage">Movies</Link>
-                        </li>
-
                         
                         {/* 2. Ehdolliset linkit (Näkyy vain, jos kirjautunut) */}
                         {isAuthenticated && (
                             <>
                                 <li className="nav-item">
                                     <Link className='nav-link' to="/groups">Groups</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className='nav-link' to="/movietestpage">Movies</Link>
                                 </li>
                             </>
                         )}
