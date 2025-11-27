@@ -7,7 +7,6 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Login from "../pages/Login";
 import Groups from "../pages/Groups";
-import MovieTestPage from "../pages/Movie_test_page";
 import MovieSearch from "../pages/Search";
 import Registration from "../pages/Registration";
 import ProtectedRoute from '../components/ProtectedRoute';
@@ -25,7 +24,6 @@ function App() {
           <Route path="/login" exact element={<Login />} />
           <Route path="/search" exact element={<MovieSearch />} />
           <Route path="/registration" exact element={<Registration />} />
-          <Route path="/movietestpage" exact element={<MovieTestPage />} />
 
         <Route element={<ProtectedRoute />}>
           <Route path="/groups" exact element={<Groups />} />

@@ -45,7 +45,7 @@ export default function MovieSearch() {
               <img
                 src={
                   movie.poster_path
-                    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                    ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
                     : "https://via.placeholder.com/500x750?text=No+Image"
                 }
                 alt={movie.title}
@@ -64,7 +64,7 @@ export default function MovieSearch() {
               <img
                 src={
                   show.poster_path
-                    ? `https://image.tmdb.org/t/p/w500${show.poster_path}`
+                    ? `https://image.tmdb.org/t/p/w200${show.poster_path}`
                     : "https://via.placeholder.com/500x750?text=No+Image"
                 }
                 alt={show.name}
@@ -83,7 +83,7 @@ export default function MovieSearch() {
 
               {person.profile_path && (
                 <img
-                  src={`https://image.tmdb.org/t/p/w500${person.profile_path}`}
+                  src={`https://image.tmdb.org/t/p/w200${person.profile_path}`}
                   alt={person.name}
                 />
               )}
