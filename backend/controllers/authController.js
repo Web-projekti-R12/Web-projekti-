@@ -79,7 +79,7 @@ export async function loginUser(req, res) {
     if (!user) {
       return res
         .status(401)
-        .json({ msg: 'Virheellinen sähköposti tai salasana' })
+        .json({ msg: 'Incorrect email or password' })
     }
 
     const isMatch = await bcrypt.compare(password, user.password_hash)
@@ -87,7 +87,7 @@ export async function loginUser(req, res) {
     if (!isMatch) {
       return res
         .status(401)
-        .json({ msg: 'Virheellinen sähköposti tai salasana' })
+        .json({ msg: 'Incorrect email or password' })
     }
 
     const payload = { userId: user.user_id }
