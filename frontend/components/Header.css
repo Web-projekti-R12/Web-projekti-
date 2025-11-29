@@ -1,0 +1,14 @@
+.header-banner {
+  width: 100%;
+  height: 400px;
+  background-size: cover;
+}
+
+.header-banner-text {
+  position: absolute;
+  left: 40px;
+  bottom: 30px;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+}
