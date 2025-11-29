@@ -1,5 +1,6 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
+
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 import Navbar from "../components/Navbar";
@@ -10,26 +11,25 @@ import Groups from "../pages/Groups";
 import MovieSearch from "../pages/Search";
 import Registration from "../pages/Registration";
 import ProtectedRoute from "../components/ProtectedRoute";
-import Favorites from "./Favorites"; // <-- tuodaan suosikit
+import Favorites from "../pages/Favorites";
 
 function App() {
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+
   return (
     <>
       <Navbar />
-      <Header />
 
+      {isHomePage && <Header />}
+    
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<MovieSearch />} />
           <Route path="/registration" element={<Registration />} />
-          {/*<Route path="/movietestpage" element={<MovieTestPage />} />  <<< tämä pois*/}
-          <Route path="/favorites" element={<Favorites />} /> {/* uusi reitti */}
-          <Route path="/" exact element={<Home />} />
-          <Route path="/login" exact element={<Login />} />
-          <Route path="/search" exact element={<MovieSearch />} />
-          <Route path="/registration" exact element={<Registration />} />
+          <Route path="/favorites" element={<Favorites />} />
 
           <Route element={<ProtectedRoute />}>
             <Route path="/groups" element={<Groups />} />
