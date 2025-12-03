@@ -1,26 +1,30 @@
-import 'dotenv/config'
-import express from 'express'
-import cors from 'cors'
-import './config/db.js'
-import authRoutes from './routes/authRoutes.js'
-import userRoutes from './routes/userRoutes.js'
-import reviewRoutes from './routes/reviewRoutes.js'
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import './config/db.js';
+import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import favoriteRoutes from './routes/favoriteRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
 
-const app = express()
+const app = express();
 
-app.use(express.json())
-app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }))
+app.use(express.json());
+app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));
 
-app.use('/api/auth', authRoutes)
-app.use('/api/users', userRoutes) 
-app.use('/api/reviews', reviewRoutes)
+// Reitit
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/favorites', favoriteRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 
+// Testireitti
 app.get('/test', (req, res) => {
-  res.send('Palvelin vastaa ja reititys toimii!')
-})
+  res.send('Palvelin vastaa ja reititys toimii!');
+});
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Backend toimii portissa ${PORT}`)
-})
+  console.log(`Backend toimii portissa ${PORT}`);
+});

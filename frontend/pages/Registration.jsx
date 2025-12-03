@@ -58,7 +58,7 @@ export default function Registration() {
 
         {error && (
           <div className="error-message">
-            <p>error: {error}</p>
+            <p>Virhe: {error}</p>
           </div>
         )}
 

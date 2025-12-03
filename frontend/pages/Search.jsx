@@ -23,6 +23,7 @@ export default function MovieSearch() {
     const data = await res.json();
     const results = data.results || [];
 
+    // Suodata tulokset eri kategorioihin
     setMovies(results.filter((item) => item.media_type === "movie"));
     setTvShows(results.filter((item) => item.media_type === "tv"));
     setPeople(results.filter((item) => item.media_type === "person"));
@@ -81,6 +82,18 @@ export default function MovieSearch() {
     } catch (err) {
       console.error("Error submitting review:", err);
       alert("Error submitting review");
+  // Lisää suosikki backendin kautta
+  const addToFavorites = async (movieId) => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/favorites`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: 1, movie_id: movieId }), // testikäyttäjä user_id=1
+      });
+      alert("Added to favorites!");
+    } catch (err) {
+      console.error("Error adding favorite:", err);
+      alert("Failed to add favorite");
     }
   };
 
@@ -122,6 +135,9 @@ export default function MovieSearch() {
                   style={{ display: "block", marginBottom: "5px" }}
                 />
                 <p>{movie.title}</p>
+                <button onClick={() => addToFavorites(movie.id)}>
+                   Add to favorites
+                </button>
 
                 <button
                   onClick={() =>
@@ -183,6 +199,9 @@ export default function MovieSearch() {
                 alt={show.name}
               />
               <p>{show.name}</p>
+              <button onClick={() => addToFavorites(show.id)}>
+                Add to favorites
+              </button>
             </div>
           ))}
         </div>
@@ -200,6 +219,9 @@ export default function MovieSearch() {
                 />
               )}
               <p>{person.name}</p>
+              <button onClick={() => addToFavorites(person.id)}>
+                Add to favorites
+              </button>
             </div>
           ))}
         </div>
