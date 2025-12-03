@@ -57,19 +57,19 @@ export default function Login() {
         <div className="login-container">
             
             <div className="form-card">
-                <h2 className="form-title">Kirjaudu sisään</h2>
+                <h2 className="form-title">Login</h2>
                 
                 {/* Virheilmoituksen näyttö */}
                 {error && (
                     <div className="error-message" role="alert">
-                        <p className="error-text">Virhe: {error}</p>
+                        <p className="error-text">Error: {error}</p>
                     </div>
                 )}
                 
                 <form onSubmit={handleSubmit} className="login-form">
 
                     <div className="form-group">
-                        <label htmlFor="username">Käyttäjätunnus:</label>
+                        <label htmlFor="username">Username:</label>
                         <input
                             type="text"
                             id="username"
@@ -78,12 +78,12 @@ export default function Login() {
                             required
                             className="form-input"
                             disabled={loading}
-                            placeholder="Anna käyttäjätunnuksesi"
+                            placeholder="Enter your username"
                         />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="password">Salasana:</label>
+                        <label htmlFor="password">Password:</label>
                         <input
                             type="password"
                             id="password"
@@ -92,7 +92,7 @@ export default function Login() {
                             required
                             className="form-input"
                             disabled={loading}
-                            placeholder="Anna salasanasi"
+                            placeholder="Enter your password"
                         />
                     </div>
 
@@ -101,12 +101,12 @@ export default function Login() {
                         disabled={loading}
                         className="submit-button"
                     >
-                        {loading ? 'Kirjaudutaan...' : 'Kirjaudu sisään'}
+                        {loading ? 'Logging in...' : 'Login'}
                     </button>
                 </form>
                 
                 <p className="registration-link-wrapper">
-                    Eikö sinulla ole tiliä? <Link to="/registration" className="registration-link">Rekisteröidy tästä</Link>
+                    Don't you have an account? <Link to="/registration" className="registration-link">Register here</Link>
                 </p>
             </div>
         </div>
