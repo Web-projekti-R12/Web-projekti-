@@ -5,6 +5,7 @@ import './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import favoriteRoutes from './routes/favoriteRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
 
 const app = express();
 
@@ -15,6 +16,8 @@ app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/favorites', favoriteRoutes);
+app.use('/api/reviews', reviewRoutes);
+
 
 // Testireitti
 app.get('/test', (req, res) => {
