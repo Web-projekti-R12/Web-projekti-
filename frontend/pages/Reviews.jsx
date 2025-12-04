@@ -6,15 +6,12 @@ export default function UserReviews() {
     const [editInputs, setEditInputs] = useState({});
     const [movieData, setMovieData] = useState({});
 
-    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-    const TMDB_API_KEY = import.meta.env.VITE_APP_TMDB_API_KEY;
-
     const fetchReviews = async () => {
         try {
             const token = localStorage.getItem("authToken");
             if (!token) return;
 
-            const res = await fetch(`${API_BASE_URL}/api/reviews`, {
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/reviews`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -34,7 +31,7 @@ export default function UserReviews() {
                 if (!movieData[review.tmdb_movie_id]) {
                     try {
                         const tmdbRes = await fetch(
-                            `https://api.themoviedb.org/3/movie/${review.tmdb_movie_id}?api_key=${TMDB_API_KEY}`
+                            `https://api.themoviedb.org/3/movie/${review.tmdb_movie_id}?api_key=${import.meta.env.VITE_APP_TMDB_API_KEY}`
                         );
                         const tmdbInfo = await tmdbRes.json();
                         setMovieData((prev) => ({
@@ -86,7 +83,7 @@ export default function UserReviews() {
         }
 
         try {
-            const res = await fetch(`${API_BASE_URL}/api/reviews/${reviewId}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/reviews/${reviewId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -122,7 +119,7 @@ export default function UserReviews() {
     if (!confirm("Are you sure you want to delete this review?")) return;
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/reviews/${reviewId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/reviews/${reviewId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

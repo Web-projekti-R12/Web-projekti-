@@ -36,6 +36,21 @@ export default function MovieSearch() {
     }));
   };
 
+  // Lisää suosikki backendin kautta
+  const addToFavorites = async (movieId) => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/favorites`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: 1, movie_id: movieId }), // testikäyttäjä user_id=1
+      });
+      alert("Added to favorites!");
+    } catch (err) {
+      console.error("Error adding favorite:", err);
+      alert("Failed to add favorite");
+    }
+  };
+
   const handleAddReview = async (movie) => {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -82,18 +97,6 @@ export default function MovieSearch() {
     } catch (err) {
       console.error("Error submitting review:", err);
       alert("Error submitting review");
-  // Lisää suosikki backendin kautta
-  const addToFavorites = async (movieId) => {
-    try {
-      await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/favorites`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: 1, movie_id: movieId }), // testikäyttäjä user_id=1
-      });
-      alert("Added to favorites!");
-    } catch (err) {
-      console.error("Error adding favorite:", err);
-      alert("Failed to add favorite");
     }
   };
 
@@ -136,7 +139,7 @@ export default function MovieSearch() {
                 />
                 <p>{movie.title}</p>
                 <button onClick={() => addToFavorites(movie.id)}>
-                   Add to favorites
+                  Add to favorites
                 </button>
 
                 <button
@@ -166,8 +169,8 @@ export default function MovieSearch() {
                     />
                     <input
                       type="number"
-                      min={0}
-                      max={10}
+                      min={1}
+                      max={5}
                       placeholder="Rating (1-5)"
                       value={inputs.rating || ""}
                       onChange={(e) =>
