@@ -10,6 +10,7 @@ import Login from "../pages/Login";
 import Groups from "../pages/Groups";
 import MovieSearch from "../pages/Search";
 import Registration from "../pages/Registration";
+import Reviews from '../pages/Reviews';
 import ProtectedRoute from "../components/ProtectedRoute";
 import Favorites from "../pages/Favorites";
 
@@ -31,9 +32,11 @@ function App() {
           <Route path="/registration" element={<Registration />} />
           <Route path="/favorites" element={<Favorites />} />
 
-          <Route element={<ProtectedRoute />}>
-            <Route path="/groups" element={<Groups />} />
-          </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/groups" exact element={<Groups />} />
+          <Route path="/reviews" exact element={<Reviews />} />
+          
+        </Route>
 
           <Route path="/*" element={<NotFound />} />
         </Routes>
