@@ -5,9 +5,10 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node index.js",
     "devStart": "nodemon --legacy-watch src/index.js"
+    
   },
   "keywords": [],
   "author": "",
@@ -21,5 +22,9 @@
     "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.10",
     "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "axios": "^1.13.2",
+    "jest": "^30.2.0"
   }
 }
