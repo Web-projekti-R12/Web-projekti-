@@ -1,0 +1,142 @@
+/* Search.css */
+
+/* Full-width container */
+.search-container {
+  width: 95%;
+  max-width: 1600px;
+  margin: 1rem auto;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+/* Search form */
+.search-container form {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.search-container input[type="text"] {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+}
+
+.search-container button[type="submit"] {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-container button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Section headers */
+h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Movie list: single column, full width */
+.movie-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Each movie card */
+.movie-card {
+  display: flex;
+  flex-direction: column; /* title/buttons below poster */
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+  padding: 1rem;
+}
+
+/* Poster + overview wrapper */
+.movie-card .poster-overview {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Poster */
+.movie-card img {
+  width: 150px;
+  height: auto;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+/* Overview text */
+.movie-card .overview {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #555;
+  display: flex;
+  align-items: center; /* center vertically with poster */
+}
+
+/* Title and buttons below poster */
+.movie-card .bottom-section {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Buttons */
+.movie-card .bottom-section button {
+  padding: 0.5rem 0.8rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #28a745;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+.movie-card .bottom-section button:hover {
+  background-color: #1e7e34;
+}
+
+/* Review form */
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.review-form input[type="text"],
+.review-form textarea,
+.review-form input[type="number"] {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.review-form textarea {
+  resize: vertical;
+}
+
+.review-form button {
+  align-self: flex-start;
+  background-color: #007bff;
+}
+
+.review-form button:hover {
+  background-color: #0056b3;
+}

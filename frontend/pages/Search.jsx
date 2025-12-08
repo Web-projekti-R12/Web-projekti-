@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Search.css";
 
 export default function MovieSearch() {
   const [query, setQuery] = useState("");
@@ -7,6 +9,7 @@ export default function MovieSearch() {
   const [people, setPeople] = useState([]);
   const [activeReviewMovieId, setActiveReviewMovieId] = useState(null);
   const [reviewInputs, setReviewInputs] = useState({});
+  const navigate = useNavigate();
 
   const apiKey = import.meta.env.VITE_APP_TMDB_API_KEY;
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -120,7 +123,7 @@ export default function MovieSearch() {
   };
 
   return (
-    <div>
+    <div className="search-container">
       <form onSubmit={handleSearch}>
         <input
           type="text"
@@ -132,21 +135,14 @@ export default function MovieSearch() {
       </form>
 
       {movies.length > 0 && (
-        <div>
+        <div className="movie-list">
           <h2>Movies</h2>
           {movies.map((movie) => {
             const inputs = reviewInputs[movie.id] || {};
             const isActive = activeReviewMovieId === movie.id;
 
             return (
-              <div
-                key={movie.id}
-                style={{
-                  marginBottom: "20px",
-                  borderBottom: "1px solid #ccc",
-                  paddingBottom: "10px",
-                }}
-              >
+              <div className="movie-card" key={movie.id}>
                 <img
                   src={
                     movie.poster_path
@@ -154,9 +150,9 @@ export default function MovieSearch() {
                       : "https://via.placeholder.com/200x300?text=No+Image"
                   }
                   alt={movie.title}
-                  style={{ display: "block", marginBottom: "5px" }}
                 />
-                <p>{movie.title}</p>
+                <p><strong>{movie.title}</strong></p>
+                <p>{movie.overview}</p>
                 <button onClick={() => addToFavorites(movie.id)}>
                   Add to favorites
                 </button>
@@ -169,8 +165,12 @@ export default function MovieSearch() {
                   {isActive ? "Cancel Review" : "Review this movie"}
                 </button>
 
+                <button onClick={() => navigate(`/reviews/movie/${movie.id}`)}>
+                  Show Reviews
+                </button>
+
                 {isActive && (
-                  <div style={{ marginTop: "10px" }}>
+                  <div className="review-form">
                     <input
                       type="text"
                       placeholder="Review Title"
@@ -208,10 +208,11 @@ export default function MovieSearch() {
       )}
 
       {tvShows.length > 0 && (
-        <div>
+        <div className="tv-list">
           <h2>TV Shows</h2>
           {tvShows.map((show) => (
-            <div key={show.id}>
+            <div className="tv-card"
+             key={show.id}>
               <img
                 src={
                   show.poster_path
@@ -220,7 +221,8 @@ export default function MovieSearch() {
                 }
                 alt={show.name}
               />
-              <p>{show.name}</p>
+              <p><strong>{show.name}</strong></p>
+              <p>{show.overview}</p>
               <button onClick={() => addToFavorites(show.id)}>
                 Add to favorites
               </button>
@@ -230,10 +232,11 @@ export default function MovieSearch() {
       )}
 
       {people.length > 0 && (
-        <div>
+        <div className="people-list">
           <h2>People</h2>
           {people.map((person) => (
-            <div key={person.id}>
+            <div className="people-card"
+             key={person.id}>
               {person.profile_path && (
                 <img
                   src={`https://image.tmdb.org/t/p/w200${person.profile_path}`}

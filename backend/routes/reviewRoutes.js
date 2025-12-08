@@ -8,5 +8,6 @@ router.get('/', auth, reviewController.getUserReviews);
 router.post('/', auth, reviewController.addReview);
 router.put('/:rating_id', auth, reviewController.updateReview);
 router.delete('/:rating_id', auth, reviewController.deleteReview);
+router.get('/movie/:tmdb_movie_id', reviewController.getReviewsByMovie);
 
 export default router;
