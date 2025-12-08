@@ -14,6 +14,7 @@ import Reviews from '../pages/Reviews';
 import ProtectedRoute from "../components/ProtectedRoute";
 import Favorites from "../pages/Favorites";
 import MovieReviews from "../pages/MovieReviews";
+import Profile from "../pages/Profile";
 
 function App() {
   const location = useLocation();
@@ -32,11 +33,15 @@ function App() {
           <Route path="/search" element={<MovieSearch />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/reviews/movie/:tmdbId" element={<MovieReviews />} />
+         
+          
 
         <Route element={<ProtectedRoute />}>
           <Route path="/groups" exact element={<Groups />} />
           <Route path="/reviews" exact element={<Reviews />} />
           <Route path="/favorites" element={<Favorites />} />
+          <Route path="/profile" element={<Profile />} />
+          
         </Route>
 
           <Route path="/*" element={<NotFound />} />
