@@ -1,26 +1,31 @@
-// controllers/favoriteController.js
 import FavoriteModel from '../models/favoriteModel.js';
 
 const FavoriteController = {
   getFavorites: async (req, res) => {
     try {
-      const favorites = await FavoriteModel.getAllFavorites();
+      const userId = req.userId; // middlewaresta
+
+      const favorites = await FavoriteModel.getFavoritesByUser(userId);
       res.json(favorites);
     } catch (err) {
-      console.error('GET error:', err);
+      console.error('GET favorites error:', err);
       res.status(500).json({ error: 'Failed to fetch favorites' });
     }
   },
 
   addFavorite: async (req, res) => {
     try {
-      const { user_id, movie_id } = req.body;
+      const userId = req.userId;
+      const { movie_id } = req.body;
 
-      const newFavorite = await FavoriteModel.addFavorite(user_id, movie_id);
+      if (!movie_id) {
+        return res.status(400).json({ error: 'movie_id puuttuu' });
+      }
+
+      const newFavorite = await FavoriteModel.addFavorite(userId, movie_id);
       res.status(201).json(newFavorite);
-
     } catch (err) {
-      console.error('POST error:', err);
+      console.error('POST favorites error:', err);
       res.status(500).json({ error: 'Failed to add favorite' });
     }
   },
@@ -28,12 +33,12 @@ const FavoriteController = {
   deleteFavorite: async (req, res) => {
     try {
       const { id } = req.params;
+      const userId = req.userId;
 
-      await FavoriteModel.deleteFavorite(id);
+      await FavoriteModel.deleteFavorite(id, userId);
       res.status(204).end();
-
     } catch (err) {
-      console.error('DELETE error:', err);
+      console.error('DELETE favorites error:', err);
       res.status(500).json({ error: 'Failed to delete favorite' });
     }
   }
