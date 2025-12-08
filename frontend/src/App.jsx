@@ -13,6 +13,7 @@ import Registration from "../pages/Registration";
 import Reviews from '../pages/Reviews';
 import ProtectedRoute from "../components/ProtectedRoute";
 import Favorites from "../pages/Favorites";
+import Profile from "../pages/Profile";
 
 function App() {
   const location = useLocation();
@@ -31,10 +32,12 @@ function App() {
           <Route path="/search" element={<MovieSearch />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/favorites" element={<Favorites />} />
+          
 
         <Route element={<ProtectedRoute />}>
           <Route path="/groups" exact element={<Groups />} />
           <Route path="/reviews" exact element={<Reviews />} />
+          <Route path="/profile" element={<Profile />} />
           
         </Route>
 

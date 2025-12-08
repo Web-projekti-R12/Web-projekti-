@@ -23,7 +23,6 @@ export default function MovieSearch() {
     const data = await res.json();
     const results = data.results || [];
 
-    // Suodata tulokset eri kategorioihin
     setMovies(results.filter((item) => item.media_type === "movie"));
     setTvShows(results.filter((item) => item.media_type === "tv"));
     setPeople(results.filter((item) => item.media_type === "person"));
@@ -36,14 +35,34 @@ export default function MovieSearch() {
     }));
   };
 
-  // Lisää suosikki backendin kautta
+  // Lisää suosikki JWT-tokenilla
   const addToFavorites = async (movieId) => {
     try {
-      await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/favorites`, {
+      const token = localStorage.getItem("authToken"); // sama avain kuin Login.jsx:ssä
+
+      if (!token) {
+        alert("You must be logged in to add favorites");
+        return;
+      }
+
+      const res = await fetch(`${API_BASE_URL}/api/favorites`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: 1, movie_id: movieId }), // testikäyttäjä user_id=1
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ movie_id: movieId }), // user_id tulee tokenista backendissä
       });
+
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Failed to add favorite:", res.status, text);
+        alert("Failed to add favorite");
+        return;
+      }
+
+      const data = await res.json();
+      console.log("Favorite added:", data);
       alert("Added to favorites!");
     } catch (err) {
       console.error("Error adding favorite:", err);
