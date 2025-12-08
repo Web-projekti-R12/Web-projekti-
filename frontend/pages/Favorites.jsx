@@ -2,11 +2,29 @@ import { useEffect, useState } from "react";
 
 export default function Favorites() {
   const [favorites, setFavorites] = useState([]);
+  const token = localStorage.getItem("authToken");
 
-  // Lataa suosikit
   const loadFavorites = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/favorites`);
+      if (!token) {
+        console.warn("Ei JWT-tokenia (authToken), käyttäjä ei ole kirjautunut.");
+        return;
+      }
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/favorites`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        console.error("Favorites request failed:", res.status);
+        return;
+      }
+
       const favs = await res.json();
 
       const withDetails = await Promise.all(
@@ -35,13 +53,25 @@ export default function Favorites() {
     loadFavorites();
   }, []);
 
-  // Poista suosikki
   const removeFavorite = async (id) => {
     try {
-      await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/favorites/${id}`, {
-        method: "DELETE",
-      });
-      // Päivitä lista poistamisen jälkeen
+      if (!token) return;
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/favorites/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!res.ok && res.status !== 204) {
+        console.error("Delete favorite failed:", res.status);
+        return;
+      }
+
       setFavorites((prev) => prev.filter((fav) => fav.id !== id));
     } catch (err) {
       console.error("Error deleting favorite:", err);
@@ -64,7 +94,9 @@ export default function Favorites() {
             style={{ width: "150px" }}
           />
           <p>{fav.title}</p>
-          <button onClick={() => removeFavorite(fav.id)}>Remove from favorites</button>
+          <button onClick={() => removeFavorite(fav.id)}>
+            Remove from favorites
+          </button>
         </div>
       ))}
     </div>
