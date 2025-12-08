@@ -13,6 +13,7 @@ import Registration from "../pages/Registration";
 import Reviews from '../pages/Reviews';
 import ProtectedRoute from "../components/ProtectedRoute";
 import Favorites from "../pages/Favorites";
+import MovieReviews from "../pages/MovieReviews";
 import Profile from "../pages/Profile";
 
 function App() {
@@ -31,12 +32,14 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<MovieSearch />} />
           <Route path="/registration" element={<Registration />} />
-          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/reviews/movie/:tmdbId" element={<MovieReviews />} />
+         
           
 
         <Route element={<ProtectedRoute />}>
           <Route path="/groups" exact element={<Groups />} />
           <Route path="/reviews" exact element={<Reviews />} />
+          <Route path="/favorites" element={<Favorites />} />
           <Route path="/profile" element={<Profile />} />
           
         </Route>

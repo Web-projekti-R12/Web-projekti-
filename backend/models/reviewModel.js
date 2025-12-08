@@ -1,9 +1,41 @@
 import db from '../config/db.js';
 
 const reviewModel = {
+    getReviewsByMovie: async (tmdbId) => {
+        const result = await db.query(
+            `SELECT 
+                r.rating_id,
+                r.tmdb_movie_id,
+                r.rating,
+                r.title,
+                r.content,
+                r.created_at,
+                r.updated_at,
+                u.email
+            FROM ratings r
+            JOIN users u ON r.user_id = u.user_id
+            WHERE r.tmdb_movie_id = $1
+            ORDER BY r.created_at DESC`,
+            [tmdbId]
+        );
+        return result.rows;
+    },
+
     getUserReviews: async (user_id) => {
         const result = await db.query(
-            'SELECT * FROM ratings WHERE user_id = $1 ORDER BY rating_id DESC',
+            `SELECT 
+                r.rating_id,
+                r.tmdb_movie_id,
+                r.rating,
+                r.title,
+                r.content,
+                r.created_at,
+                r.updated_at,
+                u.email
+            FROM ratings r
+            JOIN users u ON r.user_id = u.user_id
+            WHERE r.user_id = $1
+            ORDER BY r.created_at DESC`,
             [user_id]
         );
         return result.rows;
