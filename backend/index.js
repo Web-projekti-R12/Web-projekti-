@@ -2,11 +2,13 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import './config/db.js';
+
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import favoriteRoutes from './routes/favoriteRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
+import groupRoutes from './routes/groupRoutes.js';
 
 const app = express();
 
@@ -19,11 +21,12 @@ app.use('/api/users', userRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/profile', profileRoutes);
+app.use('/api/groups', groupRoutes);
 
 
 // Testireitti
 app.get('/test', (req, res) => {
-  res.send('Palvelin vastaa ja reititys toimii!');
+  res.send('Palvelin vastaa ja reititys toimii!11');
 });
 
 const PORT = process.env.PORT || 3000;
