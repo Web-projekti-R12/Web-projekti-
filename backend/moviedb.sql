@@ -25,3 +25,31 @@ CREATE TABLE ratings (
     updated_at TIMESTAMP,
     UNIQUE (user_id, tmdb_movie_id)
 );
+
+CREATE TABLE groups (
+  group_id   SERIAL PRIMARY KEY,
+  name       VARCHAR(100) NOT NULL,
+  description TEXT,
+  owner_id   INTEGER NOT NULL REFERENCES users(user_id),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE group_members (
+  id        SERIAL PRIMARY KEY,
+  group_id  INTEGER NOT NULL REFERENCES groups(group_id) ON DELETE CASCADE,
+  user_id   INTEGER NOT NULL REFERENCES users(user_id)   ON DELETE CASCADE,
+  role      VARCHAR(20) DEFAULT 'member',
+  joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (group_id, user_id)
+);
+
+CREATE TABLE group_join_requests (
+  request_id SERIAL PRIMARY KEY,
+  group_id   INTEGER NOT NULL REFERENCES groups(group_id) ON DELETE CASCADE,
+  user_id    INTEGER NOT NULL REFERENCES users(user_id)   ON DELETE CASCADE,
+  status     VARCHAR(20) NOT NULL DEFAULT 'pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  decided_at TIMESTAMP,
+  decided_by INTEGER REFERENCES users(user_id),
+  UNIQUE (group_id, user_id)
+);

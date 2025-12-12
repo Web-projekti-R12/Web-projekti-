@@ -42,3 +42,14 @@ CREATE TABLE group_members (
   joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE (group_id, user_id)
 );
+
+CREATE TABLE group_join_requests (
+  request_id SERIAL PRIMARY KEY,
+  group_id   INTEGER NOT NULL REFERENCES groups(group_id) ON DELETE CASCADE,
+  user_id    INTEGER NOT NULL REFERENCES users(user_id)   ON DELETE CASCADE,
+  status     VARCHAR(20) NOT NULL DEFAULT 'pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  decided_at TIMESTAMP,
+  decided_by INTEGER REFERENCES users(user_id),
+  UNIQUE (group_id, user_id)
+);
