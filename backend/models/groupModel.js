@@ -25,7 +25,6 @@ export async function getAllGroups() {
 
 // Create new group
 export async function createGroup(name, description, ownerId) {
-  // 1) insert into groups
   const result = await db.query(
     `
     INSERT INTO groups (name, description, owner_id)
@@ -37,7 +36,7 @@ export async function createGroup(name, description, ownerId) {
 
   const group = result.rows[0];
 
-  // 2) add owner as member with role 'owner'
+  // Add owner as a member
   await db.query(
     `
     INSERT INTO group_members (group_id, user_id, role)
@@ -83,18 +82,51 @@ export async function isMember(groupId, userId) {
   return result.rowCount > 0;
 }
 
-// Join group
-export async function addMember(groupId, userId) {
-  const result = await db.query(
+// Check ownership
+export async function isOwner(groupId, userId) {
+  const res = await db.query(
+    `SELECT 1 FROM groups WHERE group_id = $1 AND owner_id = $2`,
+    [groupId, userId]
+  );
+  return res.rowCount > 0;
+}
+
+// Add member (role can be 'member' or 'owner')
+export async function addMember(groupId, userId, role = "member") {
+  const res = await db.query(
     `
     INSERT INTO group_members (group_id, user_id, role)
-    VALUES ($1, $2, 'member')
+    VALUES ($1, $2, $3)
     ON CONFLICT (group_id, user_id) DO NOTHING
     RETURNING *;
     `,
+    [groupId, userId, role]
+  );
+  return res.rows[0] || null;
+}
+
+// Remove member
+export async function removeMember(groupId, userId) {
+  const res = await db.query(
+    `DELETE FROM group_members WHERE group_id = $1 AND user_id = $2`,
     [groupId, userId]
   );
-  return result.rows[0] || null;
+  return res.rowCount > 0;
+}
+
+// List members
+export async function getMembers(groupId) {
+  const res = await db.query(
+    `
+    SELECT m.user_id, m.role, m.joined_at, u.email
+    FROM group_members m
+    JOIN users u ON u.user_id = m.user_id
+    WHERE m.group_id = $1
+    ORDER BY m.role DESC, m.joined_at ASC;
+    `,
+    [groupId]
+  );
+  return res.rows;
 }
 
 // Delete group (only owner)

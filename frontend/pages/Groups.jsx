@@ -6,10 +6,13 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export default function Groups() {
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const [createLoading, setCreateLoading] = useState(false);
   const [error, setError] = useState("");
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+
   const navigate = useNavigate();
 
   const token = localStorage.getItem("authToken");
@@ -19,13 +22,11 @@ export default function Groups() {
     try {
       setLoading(true);
       const res = await fetch(`${API_BASE_URL}/api/groups`);
-      if (!res.ok) {
-        throw new Error(`Failed to load groups (${res.status})`);
-      }
+      if (!res.ok) throw new Error(`Failed (${res.status})`);
       const data = await res.json();
       setGroups(data);
     } catch (err) {
-      console.error("Error loading groups:", err);
+      console.error(err);
       setError("Failed to load groups.");
     } finally {
       setLoading(false);
@@ -67,95 +68,132 @@ export default function Groups() {
 
       if (!res.ok) {
         const text = await res.text();
-        console.error("Failed to create group:", res.status, text);
+        console.error("Create group failed:", res.status, text);
         setError("Failed to create group.");
         return;
       }
 
       const newGroup = await res.json();
-      // Add new group to the top of the list
       setGroups((prev) => [newGroup, ...prev]);
+
       setName("");
       setDescription("");
     } catch (err) {
-      console.error("Error creating group:", err);
+      console.error(err);
       setError("Error creating group.");
     } finally {
       setCreateLoading(false);
     }
   };
 
-  const handleOpenGroup = (groupId) => {
-    // If you want details to require auth, you can still navigate;
-    // backend + ProtectedRoute will handle access.
-    navigate(`/groups/${groupId}`);
-  };
-
   return (
-    <div className="groups-container">
-      <h2>Groups</h2>
+    <div className="container py-4">
+      <div className="d-flex align-items-center justify-content-between mb-3">
+        <h2 className="m-0">Groups</h2>
+        <button className="btn btn-outline-secondary btn-sm" onClick={loadGroups}>
+          Refresh
+        </button>
+      </div>
 
-      {error && <p className="error-message">{error}</p>}
-
-      {/* Create group form – only visible when logged in */}
-      {isAuthenticated ? (
-        <div className="group-create-box">
-          <h3>Create a new group</h3>
-          <form onSubmit={handleCreateGroup}>
-            <div>
-              <label>Group name</label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                disabled={createLoading}
-              />
-            </div>
-            <div>
-              <label>Description (optional)</label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                disabled={createLoading}
-              />
-            </div>
-            <button type="submit" disabled={createLoading}>
-              {createLoading ? "Creating..." : "Create group"}
-            </button>
-          </form>
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
         </div>
-      ) : (
-        <p>You must be logged in to create a group.</p>
       )}
 
-      <hr />
+      <div className="row g-4">
+        {/* Create group card */}
+        <div className="col-12 col-lg-4">
+          <div className="card shadow-sm">
+            <div className="card-body">
+              <h5 className="card-title mb-3">Create a new group</h5>
 
-      <h3>All groups</h3>
-      {loading ? (
-        <p>Loading groups...</p>
-      ) : groups.length === 0 ? (
-        <p>No groups yet.</p>
-      ) : (
-        <ul className="group-list">
-          {groups.map((group) => (
-            <li key={group.group_id} className="group-list-item">
-              <div>
-                <strong>{group.name}</strong>
-                {group.description && (
-                  <p style={{ margin: "0.25rem 0" }}>{group.description}</p>
-                )}
-                <small>
-                  Owner: {group.owner_email || "Unknown"} | Members:{" "}
-                  {group.member_count ?? 0}
-                </small>
+              {!isAuthenticated ? (
+                <div className="alert alert-warning mb-0">
+                  You must be logged in to create a group.
+                </div>
+              ) : (
+                <form onSubmit={handleCreateGroup}>
+                  <div className="mb-3">
+                    <label className="form-label">Group name</label>
+                    <input
+                      className="form-control"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      disabled={createLoading}
+                      placeholder="e.g. Horror Movie Fans"
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Description (optional)</label>
+                    <textarea
+                      className="form-control"
+                      rows={3}
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      disabled={createLoading}
+                      placeholder="What is this group about?"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="btn btn-primary w-100"
+                    disabled={createLoading}
+                  >
+                    {createLoading ? "Creating..." : "Create group"}
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Group list */}
+        <div className="col-12 col-lg-8">
+          <div className="card shadow-sm">
+            <div className="card-body">
+              <h5 className="card-title mb-3">All groups</h5>
+
+              {loading ? (
+                <div className="text-muted">Loading groups...</div>
+              ) : groups.length === 0 ? (
+                <div className="text-muted">No groups yet.</div>
+              ) : (
+                <div className="list-group">
+                  {groups.map((g) => (
+                    <button
+                      key={g.group_id}
+                      className="list-group-item list-group-item-action d-flex justify-content-between align-items-start"
+                      onClick={() => navigate(`/groups/${g.group_id}`)}
+                    >
+                      <div className="me-3">
+                        <div className="fw-semibold">{g.name}</div>
+                        {g.description ? (
+                          <div className="text-muted small">{g.description}</div>
+                        ) : (
+                          <div className="text-muted small">No description</div>
+                        )}
+                        <div className="text-muted small mt-1">
+                          Owner: {g.owner_email || "Unknown"}
+                        </div>
+                      </div>
+
+                      <span className="badge text-bg-secondary rounded-pill">
+                        {g.member_count ?? 0}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+              <div className="text-muted small mt-3">
+                Tip: Click a group to view details (members only).
               </div>
-              <button onClick={() => handleOpenGroup(group.group_id)}>
-                Open
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
