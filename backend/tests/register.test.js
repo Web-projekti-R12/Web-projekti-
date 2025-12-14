@@ -1,8 +1,10 @@
-const axios = require('axios');
 
-const API_BASE_URL = 'http://localhost:3000/api/auth';
+import request from 'supertest';
+import app from '../index.js'; 
 
-describe('Register (REST API)', () => {
+const API_PREFIX = '/api/auth';
+
+describe('Register Controller (ESM & Supertest)', () => {
     
     const RANDOM_USER = {
         username: `user_${Date.now()}`, 
@@ -15,62 +17,50 @@ describe('Register (REST API)', () => {
         email: 'duplicate@example.com',
         password: 'TestPassword1'
     };
+    
+    const WEAK_USER = {
+        username: 'weakUser',
+        email: 'weakuser@example.com',
+        password: 'weak' 
+    };
 
     beforeAll(async () => {
         try {
-            await axios.post(`${API_BASE_URL}/register`, DUPLICATE_USER);
-        } catch (e) {
-           
+            await request(app)
+                .post(`${API_PREFIX}/register`)
+                .send(DUPLICATE_USER);
+        } catch (error) {
+            if (error.status !== 400) {
+                 console.error('Varoitus: DUPLICATE_USERin alustus epäonnistui:', error.message);
+            }
         }
     });
 
     test('1. Positiivinen testi: Uuden käyttäjän rekisteröinti (vahva salasana) palauttaa 201 Created', async () => {
-        try {
-            const response = await axios.post(`${API_BASE_URL}/register`, RANDOM_USER);
-            
-            expect(response.status).toBe(201);
-            
-          
-            expect(response.data).toHaveProperty('msg', 'User created');
-            expect(response.data).toHaveProperty('user');
+        const response = await request(app)
+            .post(`${API_PREFIX}/register`)
+            .send(RANDOM_USER) 
+            .expect(201); 
 
-        } catch (error) {
-            const msg = error.response ? JSON.stringify(error.response.data) : error.message;
-            throw new Error(`Rekisteröinti epäonnistui: ${msg}`);
-        }
+        expect(response.body).toHaveProperty('msg', 'User created');
+        expect(response.body).toHaveProperty('user');
     });
 
     test('2. Negatiivinen testi: Liian heikko salasana palauttaa 400', async () => {
-        const WEAK_USER = {
-            username: 'weakUser',
-            password: 'weak'
-        };
+        const response = await request(app)
+            .post(`${API_PREFIX}/register`)
+            .send(WEAK_USER)
+            .expect(400); 
 
-        try {
-            await axios.post(`${API_BASE_URL}/register`, WEAK_USER);
-            throw new Error('Rekisteröinnin olisi pitänyt epäonnistua heikolla salasanalla.');
-        } catch (error) {
-            if (error.response) {
-                expect(error.response.status).toBe(400);
-                expect(error.response.data.msg).toMatch(/password/i);
-            } else {
-                throw error;
-            }
-        }
+        expect(response.body.msg).toMatch(/password must be at least 8 characters long/i);
     });
 
     test('3. Negatiivinen testi: Varattu sähköposti palauttaa 400', async () => {
-        try {
-            await axios.post(`${API_BASE_URL}/register`, DUPLICATE_USER);
-            
-            throw new Error('Rekisteröinnin olisi pitänyt epäonnistua, mutta se onnistui.');
-        } catch (error) {
-            if (error.response) {
-                expect(error.response.status).toBe(400);
-                expect(error.response.data.msg).toBe('Email is already in use.');
-            } else {
-                throw new Error('Odottamaton virhe: ' + error.message);
-            }
-        }
+        const response = await request(app)
+            .post(`${API_PREFIX}/register`)
+            .send(DUPLICATE_USER)
+            .expect(400); 
+
+        expect(response.body.msg).toBe('Email is already in use.');
     });
 });

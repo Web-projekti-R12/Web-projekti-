@@ -26,10 +26,15 @@ app.use('/api/groups', groupRoutes);
 
 // Testireitti
 app.get('/test', (req, res) => {
-  res.send('Palvelin vastaa ja reititys toimii!11');
+  res.send('Palvelin vastaa ja reititys toimii!');
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Backend toimii portissa ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+        console.log(`Backend toimii portissa ${PORT}`);
+    });
+}
+
+// VIE SOVELLUS ULOS SUPERTESTIÄ VARTEN
+export default app;
