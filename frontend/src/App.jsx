@@ -15,6 +15,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Favorites from "../pages/Favorites";
 import MovieReviews from "../pages/MovieReviews";
 import Profile from "../pages/Profile";
+import GroupDetail from "../pages/GroupDetail";
 
 function App() {
   const location = useLocation();
@@ -25,25 +26,26 @@ function App() {
       <Navbar />
 
       {isHomePage && <Header />}
-    
+
       <main className="main-content">
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<MovieSearch />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/reviews/movie/:tmdbId" element={<MovieReviews />} />
-         
-          
+          <Route path="/groups" element={<Groups />} /> {/* 👈 lista kaikille näkyvä */}
 
-        <Route element={<ProtectedRoute />}>
-          <Route path="/groups" exact element={<Groups />} />
-          <Route path="/reviews" exact element={<Reviews />} />
-          <Route path="/favorites" element={<Favorites />} />
-          <Route path="/profile" element={<Profile />} />
-          
-        </Route>
+          {/* Protected routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/groups/:id" element={<GroupDetail />} /> {/* 👈 ryhmän sisältö */}
+            <Route path="/reviews" exact element={<Reviews />} />
+            <Route path="/favorites" element={<Favorites />} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
 
+          {/* 404 */}
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </main>
