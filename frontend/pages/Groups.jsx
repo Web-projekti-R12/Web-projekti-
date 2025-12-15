@@ -121,12 +121,12 @@ export default function Groups() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       disabled={createLoading}
-                      placeholder="e.g. Horror Movie Fans"
+                      placeholder="Horror movie fans"
                     />
                   </div>
 
                   <div className="mb-3">
-                    <label className="form-label">Description (optional)</label>
+                    <label className="form-label">Description</label>
                     <textarea
                       className="form-control"
                       rows={3}
@@ -176,7 +176,7 @@ export default function Groups() {
                           <div className="text-muted small">No description</div>
                         )}
                         <div className="text-muted small mt-1">
-                          Owner: {g.owner_email || "Unknown"}
+                          Owner: {g.owner_name || "Unknown"}
                         </div>
                       </div>
 

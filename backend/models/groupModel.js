@@ -1,7 +1,5 @@
-// models/groupModel.js
 import db from "../config/db.js";
 
-// List all groups (public)
 export async function getAllGroups() {
   const result = await db.query(
     `
@@ -11,15 +9,16 @@ export async function getAllGroups() {
       g.description,
       g.owner_id,
       g.created_at,
-      u.email AS owner_email,
+      COALESCE(u.display_name, u.email) AS owner_name,
       COUNT(m.user_id) AS member_count
     FROM groups g
     LEFT JOIN group_members m ON m.group_id = g.group_id
     LEFT JOIN users u ON u.user_id = g.owner_id
-    GROUP BY g.group_id, u.email
+    GROUP BY g.group_id, u.display_name, u.email
     ORDER BY g.created_at DESC;
     `
   );
+
   return result.rows;
 }
 
@@ -59,13 +58,14 @@ export async function getGroupById(groupId) {
       g.description,
       g.owner_id,
       g.created_at,
-      u.email AS owner_email
+      COALESCE(u.display_name, u.email) AS owner_name
     FROM groups g
     LEFT JOIN users u ON u.user_id = g.owner_id
     WHERE g.group_id = $1;
     `,
     [groupId]
   );
+
   return result.rows[0] || null;
 }
 
@@ -79,6 +79,7 @@ export async function isMember(groupId, userId) {
     `,
     [groupId, userId]
   );
+
   return result.rowCount > 0;
 }
 
@@ -88,6 +89,7 @@ export async function isOwner(groupId, userId) {
     `SELECT 1 FROM groups WHERE group_id = $1 AND owner_id = $2`,
     [groupId, userId]
   );
+
   return res.rowCount > 0;
 }
 
@@ -102,6 +104,7 @@ export async function addMember(groupId, userId, role = "member") {
     `,
     [groupId, userId, role]
   );
+
   return res.rows[0] || null;
 }
 
@@ -111,6 +114,7 @@ export async function removeMember(groupId, userId) {
     `DELETE FROM group_members WHERE group_id = $1 AND user_id = $2`,
     [groupId, userId]
   );
+
   return res.rowCount > 0;
 }
 
@@ -118,14 +122,22 @@ export async function removeMember(groupId, userId) {
 export async function getMembers(groupId) {
   const res = await db.query(
     `
-    SELECT m.user_id, m.role, m.joined_at, u.email
+    SELECT 
+      m.user_id,
+      m.role,
+      m.joined_at,
+      COALESCE(u.display_name, u.email) AS name,
+      u.email
     FROM group_members m
     JOIN users u ON u.user_id = m.user_id
     WHERE m.group_id = $1
-    ORDER BY m.role DESC, m.joined_at ASC;
+    ORDER BY 
+      (CASE WHEN m.role = 'owner' THEN 0 ELSE 1 END),
+      m.joined_at ASC;
     `,
     [groupId]
   );
+
   return res.rows;
 }
 
