@@ -7,3 +7,7 @@ PGPORT=5432
 PGDATABASE=db_name
 PGUSER=username
 PGPASSWORD=pass
+
+
+FAVORITES_SHARE_SECRET=joku-tosi-pitkä-jutska-tähä
+FRONTEND_BASE_URL=http://localhost:8080
