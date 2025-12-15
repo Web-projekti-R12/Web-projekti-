@@ -16,6 +16,8 @@ import Favorites from "../pages/Favorites";
 import MovieReviews from "../pages/MovieReviews";
 import Profile from "../pages/Profile";
 import GroupDetail from "../pages/GroupDetail";
+import SharedFavorites from "../pages/SharedFavorites";
+
 
 function App() {
   const location = useLocation();
@@ -35,11 +37,12 @@ function App() {
           <Route path="/search" element={<MovieSearch />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/reviews/movie/:tmdbId" element={<MovieReviews />} />
-          <Route path="/groups" element={<Groups />} /> {/* 👈 lista kaikille näkyvä */}
+          <Route path="/groups" element={<Groups />} />
+          <Route path="/favorites/:userId" element={<SharedFavorites />} />
 
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>
-            <Route path="/groups/:id" element={<GroupDetail />} /> {/* 👈 ryhmän sisältö */}
+            <Route path="/groups/:id" element={<GroupDetail />} />
             <Route path="/reviews" exact element={<Reviews />} />
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/profile" element={<Profile />} />

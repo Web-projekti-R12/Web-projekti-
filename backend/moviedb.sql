@@ -4,7 +4,9 @@ CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    acc_status acc_status DEFAULT 'active' NOT NULL
+    display_name VARCHAR(50) UNIQUE,
+    acc_status acc_status DEFAULT 'active' NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE favorites (
@@ -58,7 +60,7 @@ CREATE TABLE group_movies (
   group_movie_id SERIAL PRIMARY KEY,
   group_id       INTEGER NOT NULL REFERENCES groups(group_id) ON DELETE CASCADE,
   tmdb_movie_id  INTEGER NOT NULL,
-  added_by       INTEGER NOT NULL REFERENCES users(user_id) ON DELETE SET NULL,
+  added_by       INTEGER REFERENCES users(user_id) ON DELETE SET NULL,
   created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE (group_id, tmdb_movie_id)
 );
