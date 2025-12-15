@@ -1,8 +1,9 @@
-const axios = require('axios');
+import request from 'supertest';
+import app from '../index.js'; 
 
-const API_BASE_URL = 'http://localhost:3000/api/auth';
+const API_PREFIX = '/api/auth'; 
 
-describe('Login (REST API)', () => { 
+describe('Login Controller (ESM & Supertest)', () => { 
     
     const TEST_USER = {
         username: 'loginTester',
@@ -21,47 +22,40 @@ describe('Login (REST API)', () => {
     };
 
     beforeAll(async () => {
-        try {
-            await axios.post(`${API_BASE_URL}/register`, TEST_USER);
+        const response = await request(app)
+            .post(`${API_PREFIX}/register`)
+            .send(TEST_USER);
+
+        if (response.status === 201) {
             console.log('Testikäyttäjä luotu login-testiä varten.');
-        } catch (error) {
-            if (error.response && error.response.status === 400) {
-            } else {
-                console.error('Varoitus: Testikäyttäjän alustus epäonnistui:', error.message);
-            }
+        } else if (response.status === 400) {
+            console.log('Varoitus hiljennetty: Testikäyttäjä oli jo tietokannassa (status 400).');
+        } else {
+            console.error(
+                `Kriittinen virhe alustuksessa: Odotettu 201/400, saatu ${response.status}.`, 
+                response.body
+            );
+            throw new Error(`Testialustus epäonnistui odottamattomasti, status: ${response.status}`); 
         }
     });
 
-
     test('1. Positiivinen testi: Kirjautuminen oikeilla tunnuksilla palauttaa 200 ja tokenin', async () => {
-        try {
-            const response = await axios.post(`${API_BASE_URL}/login`, VALID_CREDENTIALS);
+        const response = await request(app)
+            .post(`${API_PREFIX}/login`)
+            .send(VALID_CREDENTIALS)
+            .expect(200); 
 
-            expect(response.status).toBe(200);
-
-            expect(response.data).toHaveProperty('token');
-            expect(typeof response.data.token).toBe('string');
+        expect(response.body).toHaveProperty('token');
+        expect(typeof response.body.token).toBe('string');
             
-        } catch (error) {
-            const msg = error.response ? JSON.stringify(error.response.data) : error.message;
-            throw new Error(`Kirjautuminen epäonnistui oikeilla tunnuksilla: ${msg}`);
-        }
     });
 
     test('2. Negatiivinen testi: Väärä salasana palauttaa 401 Unauthorized', async () => {
-        try {
-            await axios.post(`${API_BASE_URL}/login`, INVALID_CREDENTIALS);
-            
-            throw new Error('Väärien tunnistetietojen EI pitänyt onnistua.');
-
-        } catch (error) {
-            if (error.response) {
-                expect(error.response.status).toBe(401);
-                
-                expect(error.response.data.msg).toBe('Incorrect email or password');
-            } else {
-                throw new Error('Odotettiin HTTP-virhettä 401, mutta tapahtui muu virhe: ' + error.message);
-            }
-        }
+        const response = await request(app)
+            .post(`${API_PREFIX}/login`)
+            .send(INVALID_CREDENTIALS)
+            .expect(401);
+        
+        expect(response.body.msg).toBe('Incorrect email or password');
     });
 });

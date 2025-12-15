@@ -99,3 +99,20 @@ export async function loginUser(req, res) {
     return res.status(500).send('Palvelinvirhe kirjautumisessa.')
   }
 }
+
+export async function logoutUser(req, res) {
+  try {
+    // Aseta 'token' eväste tyhjäksi ja vanhenemaan heti
+    res.cookie('token', '', {
+      httpOnly: true,
+      expires: new Date(0), // <- Vanhenee heti
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+
+    return res.status(200).json({ message: 'Uloskirjautuminen onnistui' });
+  } catch (err) {
+    console.error('Uloskirjautumisvirhe:', err);
+    return res.status(500).send('Palvelinvirhe uloskirjautumisessa.');
+  }
+}
