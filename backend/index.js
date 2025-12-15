@@ -9,6 +9,7 @@ import favoriteRoutes from './routes/favoriteRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
 import groupRoutes from './routes/groupRoutes.js';
+import groupMovieRoutes from "./routes/groupMovieRoutes.js";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use('/api/favorites', favoriteRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/groups', groupRoutes);
+app.use("/api", groupMovieRoutes);
 
 
 // Testireitti

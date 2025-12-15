@@ -4,7 +4,8 @@ import ProfileController from '../controllers/profileController.js';
 
 const router = Router();
 
-// Poistaa kirjautuneen käyttäjän tilin
-router.delete('/', auth, ProfileController.deleteAccount);
+router.get("/", auth, ProfileController.getProfile);
+router.patch("/", auth, ProfileController.updateProfile);
+router.delete("/", auth, ProfileController.deleteAccount);
 
 export default router;

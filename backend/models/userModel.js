@@ -39,3 +39,23 @@ export async function deleteUserById(userId) {
   // montako riviä poistettu 0 > onnistui
   return result.rowCount > 0;
 }
+
+
+export async function getUserProfile(userId) {
+  const res = await db.query(
+    `SELECT user_id, email, display_name FROM users WHERE user_id = $1`,
+    [userId]
+  );
+  return res.rows[0] || null;
+}
+
+export async function updateDisplayName(userId, displayName) {
+  const res = await db.query(
+    `UPDATE users
+     SET display_name = $1
+     WHERE user_id = $2
+     RETURNING user_id, email, display_name`,
+    [displayName, userId]
+  );
+  return res.rows[0] || null;
+}
