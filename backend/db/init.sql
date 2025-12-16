@@ -11,7 +11,7 @@ CREATE TABLE users (
 
 CREATE TABLE favorites (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(user_id),
+    user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
     movie_id INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -32,7 +32,7 @@ CREATE TABLE groups (
   group_id   SERIAL PRIMARY KEY,
   name       VARCHAR(100) NOT NULL,
   description TEXT,
-  owner_id   INTEGER NOT NULL REFERENCES users(user_id),
+  owner_id   INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -52,7 +52,7 @@ CREATE TABLE group_join_requests (
   status     VARCHAR(20) NOT NULL DEFAULT 'pending',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   decided_at TIMESTAMP,
-  decided_by INTEGER REFERENCES users(user_id),
+  decided_by INTEGER REFERENCES users(user_id) ON DELETE SET NULL,
   UNIQUE (group_id, user_id)
 );
 

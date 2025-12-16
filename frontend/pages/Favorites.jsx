@@ -10,6 +10,7 @@ export default function Favorites() {
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
+  const [expanded, setExpanded] = useState({});
 
   const token = localStorage.getItem("authToken");
 
@@ -30,8 +31,6 @@ export default function Favorites() {
       });
 
       if (!res.ok) {
-        const text = await res.text();
-        console.error("Favorites request failed:", res.status, text);
         setError("Failed to load favorites.");
         setFavorites([]);
         return;
@@ -50,13 +49,13 @@ export default function Favorites() {
             title: data.title,
             poster: data.poster_path,
             year: data.release_date?.slice(0, 4),
+            overview: data.overview,
           };
         })
       );
 
       setFavorites(withDetails);
-    } catch (err) {
-      console.error("Error loading favorites:", err);
+    } catch {
       setError("Error loading favorites.");
     } finally {
       setLoading(false);
@@ -65,52 +64,40 @@ export default function Favorites() {
 
   useEffect(() => {
     loadFavorites();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const removeFavorite = async (id) => {
-    try {
-      if (!token) return;
+    if (!token) return;
 
-      const res = await fetch(`${API_BASE_URL}/api/favorites/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+    const res = await fetch(`${API_BASE_URL}/api/favorites/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      if (!res.ok && res.status !== 204) {
-        const text = await res.text();
-        console.error("Delete favorite failed:", res.status, text);
-        setError("Failed to remove favorite.");
-        return;
-      }
-
+    if (res.ok || res.status === 204) {
       setFavorites((prev) => prev.filter((fav) => fav.id !== id));
-    } catch (err) {
-      console.error("Error deleting favorite:", err);
-      setError("Error deleting favorite.");
     }
   };
 
-  // --- SHARE ---
+  const toggleOverview = (id) => {
+    setExpanded((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   const createShareLink = async () => {
     setError("");
     setMsg("");
     setShareLoading(true);
 
     try {
-      if (!token) {
-        setError("You must be logged in.");
-        return;
-      }
-
       const res = await fetch(`${API_BASE_URL}/api/favorites/share`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!res.ok) {
-        const text = await res.text();
-        console.error("Create share link failed:", res.status, text);
         setError("Failed to create share link.");
         return;
       }
@@ -118,21 +105,14 @@ export default function Favorites() {
       const data = await res.json();
       setShareUrl(data.share_url || "");
       setMsg("Share link created!");
-    } catch (e) {
-      console.error(e);
-      setError("Error creating share link.");
     } finally {
       setShareLoading(false);
     }
   };
 
   const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      setMsg("Copied to clipboard!");
-    } catch {
-      setError("Copy failed. You can copy the URL manually.");
-    }
+    await navigator.clipboard.writeText(shareUrl);
+    setMsg("Copied to clipboard!");
   };
 
   return (
@@ -141,9 +121,7 @@ export default function Favorites() {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h2 className="mb-0">Favorites</h2>
-          <div className="text-muted small">Your personal favorites list</div>
         </div>
-
         <button
           className="btn btn-outline-secondary btn-sm"
           onClick={loadFavorites}
@@ -156,12 +134,12 @@ export default function Favorites() {
       {error && <div className="alert alert-danger">{error}</div>}
       {msg && <div className="alert alert-success">{msg}</div>}
 
-      {/* SHARE CARD */}
+      {/* SHARE */}
       <div className="card shadow-sm mb-4">
         <div className="card-body">
-          <h5 className="card-title mb-2">Share your favorites</h5>
-          <p className="text-muted mb-3">
-            Create a link that others can open to view your favorites list.
+          <h5 className="card-title">Share your favorites</h5>
+          <p className="text-muted small">
+            Create a link and share!
           </p>
 
           {!shareUrl ? (
@@ -180,63 +158,73 @@ export default function Favorites() {
                   Copy
                 </button>
               </div>
-              <div className="d-flex gap-2">
-                <a
-                  className="btn btn-outline-success"
-                  href={shareUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Open link
-                </a>
-              </div>
+              <a
+                className="btn btn-outline-success btn-sm"
+                href={shareUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Open link
+              </a>
             </>
           )}
         </div>
       </div>
 
-      {/* FAVORITES LIST */}
+      {/* LIST */}
       {loading && <div className="text-muted">Loading...</div>}
-
       {!loading && favorites.length === 0 && (
         <div className="text-muted">No favorites yet.</div>
       )}
 
-      <div className="row g-3">
+      <div className="d-flex flex-column gap-2">
         {favorites.map((fav) => (
-          <div className="col-12 col-md-6 col-lg-4" key={fav.id}>
-            <div className="card h-100 shadow-sm">
-              <div className="card-body d-flex gap-3">
-                {/* Small poster like SharedFavorites */}
-                <img
-                  src={
-                    fav.poster
-                      ? `https://image.tmdb.org/t/p/w92${fav.poster}`
-                      : "https://via.placeholder.com/92x138?text=No+Image"
-                  }
-                  alt={fav.title}
-                  style={{
-                    width: 60,
-                    height: 90,
-                    objectFit: "cover",
-                    borderRadius: 4,
-                  }}
-                />
+          <div key={fav.id} className="card shadow-sm">
+            <div className="card-body d-flex align-items-center gap-3">
+              <img
+                src={
+                  fav.poster
+                    ? `https://image.tmdb.org/t/p/w92${fav.poster}`
+                    : "https://via.placeholder.com/92x138?text=No+Image"
+                }
+                alt={fav.title}
+                style={{
+                  width: 60,
+                  height: 90,
+                  objectFit: "cover",
+                  borderRadius: 4,
+                }}
+              />
 
-                <div className="flex-grow-1 d-flex flex-column">
-                  <div className="fw-semibold">{fav.title}</div>
-                  {fav.year && <div className="text-muted small">{fav.year}</div>}
+              <div className="fw-semibold">{fav.title}</div>
+              {fav.year && <div className="text-muted small">{fav.year}</div>}
 
-                  <div className="mt-2">
-                    <button
-                      className="btn btn-outline-danger btn-sm"
-                      onClick={() => removeFavorite(fav.id)}
-                    >
-                      Remove
-                    </button>
+              {fav.overview && (
+                <div className="mt-1">
+                  <div className="text-muted small" style={{ lineHeight: 1.4 }}>
+                    {expanded[fav.id] ? fav.overview : (
+                      fav.overview.length > 160 ? fav.overview.slice(0, 160) + "…" : fav.overview
+                    )}
                   </div>
+
+                  {fav.overview.length > 160 && (
+                    <button
+                      type="button"
+                      className="btn btn-link btn-sm px-0 py-0 mt-1"
+                      onClick={() => toggleOverview(fav.id)}
+                    >
+                      {expanded[fav.id] ? "Show less" : "Show more"}
+                    </button>
+                  )}
                 </div>
-              </div>
+              )}
+
+              <button
+                className="btn btn-outline-danger btn-sm"
+                onClick={() => removeFavorite(fav.id)}
+              >
+                Remove
+              </button>
             </div>
           </div>
         ))}

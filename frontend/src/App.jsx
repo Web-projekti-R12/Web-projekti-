@@ -31,7 +31,7 @@ function App() {
 
       <main className="main-content">
         <Routes>
-          {/* Public routes */}
+          {/* julkiset reitit */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<MovieSearch />} />
@@ -40,7 +40,7 @@ function App() {
           <Route path="/groups" element={<Groups />} />
           <Route path="/favorites/:userId" element={<SharedFavorites />} />
 
-          {/* Protected routes */}
+          {/* suoajatut reitit */}
           <Route element={<ProtectedRoute />}>
             <Route path="/groups/:id" element={<GroupDetail />} />
             <Route path="/reviews" exact element={<Reviews />} />

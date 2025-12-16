@@ -4,11 +4,11 @@ import "./Header.css";
 
 function Header() {
   return (
-    <header
+    <div
       className="header-banner"
       style={{ backgroundImage: `url(${moviehubImage})` }}
     >
-    </header>
+    </div>
   );
 }
 

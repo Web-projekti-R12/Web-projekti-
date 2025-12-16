@@ -1,28 +1,33 @@
 .main-content{
-  margin-top: 10px; 
-  padding: 1rem;
+  margin-top: 10px;
+  padding: clamp(12px, 2vw, 24px);
   color: #000000;
-  margin-bottom: 50px; /*Väliaikainen*/
+  margin-bottom: 0;
+  padding-bottom: calc(60px + 16px); /* footer ei peitä sisältöä */
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
+
 .login-container {
-    /* Keskitä sisältö pystysuunnassa (vaatii parent-elementin, esim. body/juuri, korkeuden) */
-    display: flex;
-    justify-content: center; /* Keskitys vaakasuunnassa */
-    align-items: center; /* Keskitys pystysuunnassa */
-    min-height: 80vh; /* Käytä koko viewportin korkeutta tai säädä tarpeen mukaan */
-    background-color: #f7f7f7;
-    padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background-color: #f7f7f7;
+  padding: clamp(16px, 3vw, 32px);
 }
 
 .form-card {
-    width: 100%;
-    max-width: 400px; /* Rajaa lomakkeen leveys järkeväksi */
-    background-color: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 400px;
+  background-color: white;
+  padding: clamp(20px, 3vw, 30px);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
 }
 
 .form-card:hover {
@@ -95,7 +100,7 @@
 }
 
 p {
-    color: black
+    color: black;
 }
 
 .success-message {

@@ -1,86 +1,80 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // TÄRKEÄÄ: Tuo useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
-    // 1. Hookit
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const isAuthenticated = !!localStorage.getItem('authToken');
 
-    // 2. Tilan tarkistus: Tarkista, onko kirjautunut sisään
-    const isAuthenticated = !!localStorage.getItem('authToken');
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    navigate('/login');
+  };
 
-    // 3. Uloskirjautumistoiminto
-    const handleLogout = () => {
-        // Poista token
-        localStorage.removeItem('authToken');
-        
-        // Ohjaa kirjautumissivulle
-        navigate('/login');
-    };
+  return (
+    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      <div className="container-fluid">
 
-    return (
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
-            <div className="container-fluid">
-                <a className="navbar-brand" href="#">MovieHub</a>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav w-100 justify-content-center align-items-center gap-3 mb-2 mb-lg-0">
+
+            {/* BRAND ENNEN HOMEA */}
+            <li className="nav-item">
+              <Link className="navbar-brand nav-link navbar-brand-inline" to="/">
+                MovieHub
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="/">Home</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/search">Search</Link>
+            </li>
+            {isAuthenticated && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/groups">Groups</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/favorites">Favorites</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/reviews">My Reviews</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/profile">Profile</Link>
+                </li>
+              </>
+            )}
+
+            {isAuthenticated ? (
+              <li className="nav-item">
+                <button className="btn btn-outline-danger ms-2" onClick={handleLogout}>
+                  Logout
                 </button>
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        
-                        {/* 1. Julkiset linkit */}
-                        <li className="nav-item">
-                            <Link className='nav-link' to="/">Home</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to="/search">Search</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to="/movietestpage">Movies</Link>
-                        </li>
-
-                        
-                        {/* 2. Ehdolliset linkit (Näkyy vain, jos kirjautunut) */}
-                        {isAuthenticated && (
-                            <>
-                                <li className="nav-item">
-                                    <Link className='nav-link' to="/groups">Groups</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className='nav-link' to="/favorites">Favorites</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className='nav-link' to="/reviews">My Reviews</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className='nav-link' to="/profile">Profile</Link>
-                                </li>
-                            </>
-                        )}
-                        
-                        {/* 3. Autentikaatiolinkit / Uloskirjautuminen */}
-                        {isAuthenticated ? (
-                            // Kirjautunut sisään: Näytä Logout-nappi
-                            <li className="nav-item">
-                                <button 
-                                    className='btn btn-outline-danger' // Käytä Bootstrap-luokkaa
-                                    onClick={handleLogout}
-                                >
-                                    Logout
-                                </button>
-                            </li>
-                        ) : (
-                            <>
-                                <li className="nav-item">
-                                    <Link className='nav-link' to="/login">Login</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className='nav-link' to="/registration">Registration</Link>
-                                </li>
-                            </>
-                        )}
-                    </ul>
-                </div>
-            </div>
-        </nav >
-    );
+              </li>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/login">Login</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/registration">Registration</Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
 }
