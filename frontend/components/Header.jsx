@@ -1,5 +1,5 @@
 import React from "react";
-import bannerVid from "../src/assets/bannervid3.mp4";
+import bannerVid from "../src/assets/header6.png";
 import "./Header.css";
 
 function Header() {
