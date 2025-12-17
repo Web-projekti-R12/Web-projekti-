@@ -16,7 +16,7 @@ const reviewController = {
         try {
             const { tmdb_movie_id } = req.params;
             const reviews = await reviewModel.getReviewsByMovie(tmdb_movie_id);
-            console.log("TMDB ID RECEIVED:", req.params.tmdbId);
+            console.log("TMDB ID RECEIVED:", tmdb_movie_id);
             res.status(200).json(reviews);
         } catch (err) {
             res.status(500).json({ message: 'Failed to fetch reviews for this movie' });
