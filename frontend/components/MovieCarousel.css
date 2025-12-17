@@ -1,0 +1,65 @@
+.mc {
+  margin-top: 20px;
+}
+
+.mc-heading {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.mc-carousel-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.mc-carousel {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+}
+
+.mc-card {
+  flex: 0 0 auto;
+  width: 180px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #fff;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mc-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.mc-image {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.mc-title {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.mc-date {
+  font-size: 13px;
+  margin-top: 4px;
+  color: #666;
+}
+
+.mc-info {
+  padding: 10px;
+  color: #555;
+}
+
+.mc-error {
+  padding: 10px;
+  color: #b00020;
+}

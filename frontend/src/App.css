@@ -1,9 +1,8 @@
-.main-content{
+.app-content {
   margin-top: 10px;
   padding: clamp(12px, 2vw, 24px);
   color: #000000;
-  margin-bottom: 0;
-  padding-bottom: calc(60px + 16px); /* footer ei peitä sisältöä */
+
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -31,80 +30,80 @@
 }
 
 .form-card:hover {
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
 }
 
 .form-title {
-    font-size: 2.25rem; /* ~36px */
-    font-weight: 800;
-    color: #1f2937; /* Harmaa 900 */
-    margin-bottom: 25px;
-    text-align: center;
-    border-bottom: 2px solid #e5e7eb;
-    padding-bottom: 15px;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #1f2937;
+  margin-bottom: 25px;
+  text-align: center;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 15px;
 }
 
 .login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Väli lomakeryhmien välillä */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #374151; /* Harmaa 700 */
-    margin-bottom: 5px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 5px;
 }
 
 .form-input {
-    width: 100%;
-    padding: 10px 15px;
-    border: 1px solid #d1d5db; /* Harmaa 300 */
-    border-radius: 8px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .form-input:focus {
-    border-color: #4f46e5; /* Indigo 600 */
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2); /* Ring-tyyli */
-    outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+  outline: none;
 }
 
 .submit-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    background-color: #4f46e5; /* Indigo 600 */
-    color: white;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #4f46e5;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
 .submit-button:hover:not(:disabled) {
-    background-color: #4338ca; /* Tummempi Indigo */
-    transform: scale(1.01);
+  background-color: #4338ca;
+  transform: scale(1.01);
 }
 
 p {
-    color: black;
+  color: black;
 }
 
 .success-message {
-  background-color: #4CAF50; /* vihreä */
+  background-color: #4caf50;
   color: white;
   padding: 20px;
   font-size: 1.6rem;
@@ -112,12 +111,17 @@ p {
   border-radius: 10px;
   margin-bottom: 20px;
   font-weight: bold;
-  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   animation: fadeIn 0.5s ease-out;
 }
 
-/* Yksinkertainen fade-in animaatio */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

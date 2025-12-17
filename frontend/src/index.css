@@ -1,3 +1,45 @@
+/* =========================
+   GLOBAL RESET & LAYOUT
+   ========================= */
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+html {
+  overflow-y: scroll;
+}
+
+body {
+  overflow-x: hidden;
+  background-color: #ffffff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+}
+
+/* =========================
+   APP LAYOUT (STICKY FOOTER)
+   ========================= */
+
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content {
+  flex: 1;
+  width: 100%;
+}
+
+/* =========================
+   NAVBAR STYLES
+   ========================= */
+
 .navbar .nav-link {
   color: rgb(0, 0, 0);
   position: relative;
@@ -44,12 +86,4 @@
 
 .navbar .navbar-brand-inline:hover {
   color: #4f46e5 !important;
-}
-
-html {
-  overflow-y: scroll;
-}
-
-body {
-  overflow-x: hidden;
 }

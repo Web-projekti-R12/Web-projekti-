@@ -1,21 +1,31 @@
 import NowPlaying from "../components/NowPlaying";
 import InComingMovies from "../components/InComingMovies";
+import "./Home.css";
 
 export default function Home() {
   return (
-    <>
-    <div>
-      <h1>Tekstiä</h1>
-    </div>
-      <div>
+    <main className="home">
+      
+      {/* Hero / intro */}
+      <section className="home-hero">
+        <div className="home-hero-inner">
+          <h1 className="home-title">Welcome to MovieHub</h1>
+          <p className="home-subtitle">
+            Search, comment and add movies to your favorites list and share it!
+          </p>
+        </div>
+      </section>
+
+      {/* Now playing */}
+      <section className="home-section">
         <NowPlaying />
-      </div>
-      <div>
+      </section>
+
+      {/* Upcoming */}
+      <section className="home-section">
         <InComingMovies />
-      </div>
-      <div>
-        <h3>H3 Tekstiä</h3>
-      </div>
-    </>
+      </section>
+
+    </main>
   );
 }

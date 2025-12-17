@@ -10,7 +10,7 @@ import Login from "../pages/Login";
 import Groups from "../pages/Groups";
 import MovieSearch from "../pages/Search";
 import Registration from "../pages/Registration";
-import Reviews from '../pages/Reviews';
+import Reviews from "../pages/Reviews";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Favorites from "../pages/Favorites";
 import MovieReviews from "../pages/MovieReviews";
@@ -18,20 +18,22 @@ import Profile from "../pages/Profile";
 import GroupDetail from "../pages/GroupDetail";
 import SharedFavorites from "../pages/SharedFavorites";
 
-
 function App() {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
   return (
-    <>
+    <div className="app-layout">
+      {/* NAVBAR */}
       <Navbar />
 
+      {/* HEADER vain etusivulla */}
       {isHomePage && <Header />}
 
-      <main className="main-content">
+      {/* PAGE CONTENT */}
+      <main className="app-content">
         <Routes>
-          {/* julkiset reitit */}
+          {/* Julkiset reitit */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<MovieSearch />} />
@@ -40,10 +42,10 @@ function App() {
           <Route path="/groups" element={<Groups />} />
           <Route path="/favorites/:userId" element={<SharedFavorites />} />
 
-          {/* suoajatut reitit */}
+          {/* Suojatut reitit */}
           <Route element={<ProtectedRoute />}>
             <Route path="/groups/:id" element={<GroupDetail />} />
-            <Route path="/reviews" exact element={<Reviews />} />
+            <Route path="/reviews" element={<Reviews />} />
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
@@ -53,8 +55,9 @@ function App() {
         </Routes>
       </main>
 
+      {/* FOOTER */}
       <Footer />
-    </>
+    </div>
   );
 }
 
