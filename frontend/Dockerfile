@@ -1,23 +1,20 @@
-FROM node:20
+FROM node:20 AS build
+WORKDIR /app
 
-WORKDIR /usr/src/app
-
-# Riippuvuudet
 COPY package*.json ./
-RUN npm install -g nodemon && npm install
+RUN npm ci
 
-# kopioi lähdekoodin
 COPY . .
 
-# Vite muuttujat
-ARG VITE_API_URL=/api
-ENV VITE_API_URL=$VITE_API_URL
+ARG VITE_API_BASE_URL
+ARG VITE_APP_TMDB_API_KEY
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+ENV VITE_APP_TMDB_API_KEY=$VITE_APP_TMDB_API_KEY
 
-# build 
 RUN npm run build
 
-# Vite oletus portti
-EXPOSE 4173
-
-# buildi
-CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "4173"]
+# 2) Serve stage
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 8080
+CMD ["nginx", "-g", "daemon off;"]

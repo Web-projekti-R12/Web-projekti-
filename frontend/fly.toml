@@ -1,0 +1,10 @@
+[http_service]
+internal_port = 8080
+force_https = true
+auto_start_machines = true
+auto_stop_machines = true
+min_machines_running = 0
+
+[build.args]
+VITE_API_BASE_URL = "https://web-projekti.fly.dev"
+VITE_APP_TMDB_API_KEY = "9bb6709c49fe82d4b8785c11344f8d9b"
